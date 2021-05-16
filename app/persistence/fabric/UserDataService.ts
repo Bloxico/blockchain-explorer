@@ -1,22 +1,23 @@
 /**
  *    SPDX-License-Identifier: Apache-2.0
  */
-import {PgService} from '../postgreSQL/PgService';
+import { PgService } from '../postgreSQL/PgService';
 
+// #NOT_IN_USE
 /**
  *
  *
  * @class UserDataService
  */
 export class UserDataService {
-	sql : PgService;
-	userModel : any;
+	sql: PgService;
+	userModel: any;
 	/**
 	 * Creates an instance of UserDataService.
 	 * @param {*} sql
 	 * @memberof UserDataService
 	 */
-	constructor(sql : PgService) {
+	constructor(sql: PgService) {
 		this.sql = sql;
 	}
 
@@ -93,14 +94,23 @@ export class UserDataService {
 				}
 			})
 			.then((users: any[]) => {
-				return users.map((user: { username: any; email: any; networkName: any; firstName: any; lastName: any; roles: any; }) => ({
-					username: user.username,
-					email: user.email,
-					networkName: user.networkName,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					roles: user.roles
-				}));
+				return users.map(
+					(user: {
+						username: any;
+						email: any;
+						networkName: any;
+						firstName: any;
+						lastName: any;
+						roles: any;
+					}) => ({
+						username: user.username,
+						email: user.email,
+						networkName: user.networkName,
+						firstName: user.firstName,
+						lastName: user.lastName,
+						roles: user.roles
+					})
+				);
 			});
 	}
 }

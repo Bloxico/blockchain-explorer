@@ -20,7 +20,7 @@ import { explorerError } from './common/ExplorerMessage';
 import { authCheckMiddleware } from './middleware/auth-check';
 import swaggerDocument from './swagger.json';
 import { ExplorerError } from './common/ExplorerError';
-import { localLoginStrategy } from './passport/local-login';
+// import { localLoginStrategy } from './passport/local-login';
 
 /**
  *
@@ -109,7 +109,7 @@ export class Explorer {
 			await platform.initialize();
 
 			// Make sure that platform instance will be referred after its initialization
-			passport.use('local-login', localLoginStrategy(platform));
+			// passport.use('local-login', localLoginStrategy(platform));
 
 			this.app.use('/api', authCheckMiddleware);
 

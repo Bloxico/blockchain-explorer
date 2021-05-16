@@ -116,7 +116,8 @@ const styles = theme => {
 		},
 		adminButton: {
 			paddingTop: '4px',
-			marginTop: 0
+			marginTop: 0,
+			color: red
 		},
 		themeSwitch: {
 			// height: 50,
@@ -159,7 +160,7 @@ const styles = theme => {
 			width: 100
 		},
 		sunIcon: {
-			color: dark ? 'rgb(247, 200, 92)' : 'rgb(245, 185, 47)',
+			color: dark ? 'rgb(247, 200, 92)' : '#FF0000',
 			margin: '8px -12px 8px 8px',
 			'@media (max-width: 1415px) and (min-width: 990px)': {
 				margin: 8
@@ -193,16 +194,16 @@ const styles = theme => {
 			// margin: 8,
 			// fontSize: '18pt',
 		},
-		userIcon: {
-			color: dark ? 'rgb(139, 143, 148)' : '#5f6164',
-			fontSize: '18pt',
-			float: 'none',
-			'&:hover': {
-				color: dark ? '#c1d7f0' : '#24272a'
-			},
-			margin: 8,
-			cursor: 'pointer'
-		},
+		// userIcon: {
+		// 	color: dark ? 'rgb(139, 143, 148)' : '#5f6164',
+		// 	fontSize: '18pt',
+		// 	float: 'none',
+		// 	'&:hover': {
+		// 		color: dark ? '#c1d7f0' : '#24272a'
+		// 	},
+		// 	margin: 8,
+		// 	cursor: 'pointer'
+		// },
 		toggleIcon: {
 			color: dark ? '#242136' : '#58c5c2',
 			fontSize: '1.75em',
@@ -225,7 +226,7 @@ export class HeaderView extends Component {
 			notifications: [],
 			isLoading: true,
 			modalOpen: false,
-			registerOpen: false,
+			// registerOpen: false,
 			selectedChannel: {}
 		};
 	}
@@ -343,17 +344,17 @@ export class HeaderView extends Component {
 		this.setState({ modalOpen: false });
 	};
 
-	registerOpen = () => {
-		this.setState(() => ({ registerOpen: true }));
-	};
+	// registerOpen = () => {
+	// 	this.setState(() => ({ registerOpen: true }));
+	// };
 
-	registerClose = () => {
-		this.setState(() => ({ registerOpen: false }));
-	};
+	// registerClose = () => {
+	// 	this.setState(() => ({ registerOpen: false }));
+	// };
 
-	onRegister = () => {
-		this.registerClose();
-	};
+	// onRegister = () => {
+	// 	this.registerClose();
+	// };
 
 	logout = async () => {
 		const result = await this.props.logout();
@@ -478,7 +479,7 @@ export class HeaderView extends Component {
 			notifyDrawer,
 			adminDrawer,
 			modalOpen,
-			registerOpen,
+			// registerOpen,
 			notifications
 		} = this.state;
 		const links = [
@@ -570,13 +571,13 @@ export class HeaderView extends Component {
 										/>
 										<FontAwesome name="moon-o" className={classes.moonIcon} />
 									</div>
-									<div className={classes.adminButton}>
+									{/* <div className={classes.adminButton}>
 										<FontAwesome
 											name="user-plus"
 											className={classes.userIcon}
 											onClick={() => this.registerOpen()}
 										/>
-									</div>
+									</div> */}
 									<div className={classes.adminButton}>
 										<FontAwesome
 											name="sign-out"
@@ -605,15 +606,15 @@ export class HeaderView extends Component {
 								<AdminPanel />
 							</div>
 						</Drawer>
-						<Dialog
+						{/* <Dialog
 							open={registerOpen}
 							onClose={this.registerClose}
 							fullWidth={false}
 							maxWidth="md"
 						>
-							<UsersPanal onClose={this.registerClose} onRegister={this.onRegister} />
-							{/* <Register onClose={this.registerClose} onRegister={this.onRegister} /> */}
-						</Dialog>
+							<UsersPanal onClose={this.registerClose} onRegister={this.onRegister} /> */}
+						{/* <Register onClose={this.registerClose} onRegister={this.onRegister} /> */}
+						{/* </Dialog> */}
 						<Dialog
 							open={modalOpen}
 							onClose={this.handleClose}

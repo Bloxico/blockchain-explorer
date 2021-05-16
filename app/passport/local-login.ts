@@ -15,6 +15,7 @@ const jwtSignAsync = promisify<
 	jwt.SignOptions
 >(jwt.sign);
 
+// #NOT_IN_USE
 export const localLoginStrategy = function(platform) {
 	const proxy = platform.getProxy();
 	return new Strategy(
