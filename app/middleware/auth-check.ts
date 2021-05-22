@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const AuthorizationService = require('./auth/athorization-service');
+const AuthorizationService = require('../auth/authorization-service');
 
 /**
  *  The Auth Checker middleware function.

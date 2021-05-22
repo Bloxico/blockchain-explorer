@@ -140,10 +140,14 @@ export class FabricGateway {
 					);
 				}
 			}
+			console.log('pre connect');
+			console.log(JSON.stringify(this.config));
+			console.log(JSON.stringify(connectionOptions));
 
 			// Connect to gateway
 			await this.gateway.connect(this.config, connectionOptions);
 		} catch (error) {
+			console.log(error);
 			logger.error(
 				`${explorerError.ERROR_1010}: ${JSON.stringify(error, null, 2)}`
 			);

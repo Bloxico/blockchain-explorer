@@ -3,7 +3,7 @@
  */
 import { helper } from '../common/helper';
 import { responder } from './requestutils';
-const AuthorizationService = require('./auth/athorization-service');
+const AuthorizationService = require('../auth/authorization-service');
 
 const logger = helper.getLogger('Auth');
 
