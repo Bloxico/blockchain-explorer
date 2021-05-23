@@ -40,6 +40,12 @@ export async function authroutes(router: any, platform: any) {
 	router.post('/login', async (req, res, next) => {
 		logger.debug('req.body', req.body);
 
+		console.log('**********');
+		console.log(req.body);
+		// 		{ user: 'exploreradmin',
+		//   password: 'exploreradminpw',
+		//   network: 'slaff-test-network' }
+
 		// #EXTERNAL USERS
 		const loginResponse = await AuthorizationService.login(
 			'test@test.com',

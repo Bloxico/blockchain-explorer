@@ -2,6 +2,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as jwt from 'jsonwebtoken';
+import config from '../explorerconfig.json';
 const AuthorizationService = require('../auth/authorization-service');
 
 /**
@@ -15,29 +17,23 @@ export const authCheckMiddleware = async (req, res, next) => {
 	// Get the last part from a authorization header string like "bearer token-value"
 	const token = req.headers.authorization.split(' ')[1];
 
-	const userData = await AuthorizationService.check(token);
-	console.log('prosao CHECK');
-	// console.log(userData)
-
-	req.requestUserId = userData.user;
-	req.network = userData.network;
-
-	return next();
-
 	// Decode the token using a secret key-phrase
-	// return jwt.verify(token, config.jwt.secret, (err, decoded) => {
-	// 	// The 401 code is for unauthorized status
-	// 	if (err) {
-	// 		return res.status(401).end();
-	// 	}
+	const jwtSecret = process.env.JWT_SECRET || 'secretKey';
+	return jwt.verify(token, jwtSecret, (err, decoded) => {
+		// The 401 code is for unauthorized status
+		if (err) {
+			console.log('ERROR ERROR ERROR');
 
-	// 	const requestUserId = decoded.user;
+			// TODO: Refresh
+			return res.status(401).end();
+		}
 
-	// 	req.requestUserId = requestUserId;
-	// 	req.network = decoded.network;
+		req.network = 'slaff-test-network';
 
-	// 	// TODO: check if a user exists, otherwise error
+		console.log('OKOKOK');
 
-	// 	return next();
-	// });
+		// TODO: check if a user exists, otherwise error
+
+		return next();
+	});
 };

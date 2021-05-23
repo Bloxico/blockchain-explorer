@@ -116,8 +116,7 @@ const styles = theme => {
 		},
 		adminButton: {
 			paddingTop: '4px',
-			marginTop: 0,
-			color: red
+			marginTop: 0
 		},
 		themeSwitch: {
 			// height: 50,
@@ -160,7 +159,7 @@ const styles = theme => {
 			width: 100
 		},
 		sunIcon: {
-			color: dark ? 'rgb(247, 200, 92)' : '#FF0000',
+			color: dark ? 'rgb(247, 200, 92)' : 'rgb(245, 185, 47)',
 			margin: '8px -12px 8px 8px',
 			'@media (max-width: 1415px) and (min-width: 990px)': {
 				margin: 8
