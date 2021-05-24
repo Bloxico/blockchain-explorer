@@ -96,7 +96,7 @@ export class Login extends Component {
 			autoLoginAttempted: false,
 			error: '',
 			networks,
-			authEnabled: false,
+			authEnabled: true,
 			isLoading: false
 		};
 	}
@@ -303,6 +303,7 @@ export class Login extends Component {
 							variant="contained"
 							color="primary"
 							className={classes.submit}
+							disabled={isLoading}
 						>
 							{authEnabled ? 'Sign in' : 'Connect'}
 						</Button>

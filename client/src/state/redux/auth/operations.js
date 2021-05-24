@@ -29,7 +29,8 @@ const login = ({ user, password }) => dispatch =>
 			// eslint-disable-next-line no-console
 			console.error(error);
 			dispatch(errorAction(JSON.stringify(error)));
-			return { status: 'Error', message: 'Invalid User, Password' };
+			// return { status: 'Error', message: 'Invalid User, Password' };
+			return { status: 'Error', message: error.message};
 		});
 
 const network = () => dispatch =>

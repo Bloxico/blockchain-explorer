@@ -33,7 +33,6 @@ class AuthorizationService {
 
 		// TODO: Add response model
 		const response = await this.post<any>('user/login', requestData);
-
 		return {
 			token: response.token,
 			userData: {
@@ -86,10 +85,17 @@ class AuthorizationService {
 		try {
 			const resp = await this.client.post(action, requestData, requestOptions);
 			const body = resp.data as AuthServiceResponseModel;
+
+			if (resp.status != 200) {
+				// TODO: Check this
+				console.log(body)
+				throw new Error(`Failed to login: ${body}`);
+			}
+
 			return body.data;
 		} catch (err) {
-			// TODO: Handle Error Here
 			logger.error(err);
+			throw err;
 		}
 	}
 
@@ -121,10 +127,17 @@ class AuthorizationService {
 		try {
 			const resp = await this.client.post(action, {}, requestOptions);
 			const body = resp.data as AuthServiceResponseModel;
+
+			if (resp.status != 200) {
+				// TODO: Check this
+				console.log(body)
+				throw new Error(`Failed to login: ${body}`);
+			}
+
 			return body.data;
 		} catch (err) {
-			// TODO: Handle Error Here
 			logger.error(err);
+			throw err;
 		}
 	}
 }

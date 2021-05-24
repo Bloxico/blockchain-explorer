@@ -39,39 +39,23 @@ export async function authroutes(router: any, platform: any) {
 	 */
 	router.post('/login', async (req, res, next) => {
 		logger.debug('req.body', req.body);
+		try {
+			const loginResponse = await AuthorizationService.login(
+				req.body.user,
+				req.body.password
+			);
 
-		console.log('**********');
-		console.log(req.body);
-		// 		{ user: 'exploreradmin',
-		//   password: 'exploreradminpw',
-		//   network: 'slaff-test-network' }
-
-		const loginResponse = await AuthorizationService.login(
-			'test@test.com',
-			'iva'
-		);
-
-		return res.status(200).json({
-			success: true,
-			message: 'You have successfully logged in!',
-			token: loginResponse.token
-		});
-
-		// return passport.authenticate('local-login', async (err, token, userData) => {
-		// 	if (!token) {
-		// 		return res.status(400).json({
-		// 			success: false,
-		// 			message: userData.message
-		// 		});
-		// 	}
-
-		// 	return res.status(200).json({
-		// 		success: true,
-		// 		message: 'You have successfully logged in!',
-		// 		token,
-		// 		user: userData
-		// 	});
-		// })(req, res, next);
+			return res.status(200).json({
+				success: true,
+				message: 'You have successfully logged in!',
+				token: loginResponse.token
+			});
+		} catch (error) {
+			return res.status(400).json({
+				success: false,
+				message: error.toString()
+			});
+		}
 	});
 
 	router.post(
