@@ -35,7 +35,7 @@ export async function authroutes(router: any, platform: any) {
 	 * *
 	 * Login
 	 * POST /login -> /login
-	 * curl -X POST -H 'Content-Type: application/json' -d '{ 'user': '<user>', 'password': '<password>', 'network': '<network>' }' -i 'http://<host>:<port>/login'
+	 * curl -X POST -H 'Content-Type: application/json' -d '{ 'user': '<user>', 'password': '<password>' }' -i 'http://<host>:<port>/login'
 	 */
 	router.post('/login', async (req, res, next) => {
 		logger.debug('req.body', req.body);
@@ -46,7 +46,6 @@ export async function authroutes(router: any, platform: any) {
 		//   password: 'exploreradminpw',
 		//   network: 'slaff-test-network' }
 
-		// #EXTERNAL USERS
 		const loginResponse = await AuthorizationService.login(
 			'test@test.com',
 			'iva'
@@ -55,8 +54,7 @@ export async function authroutes(router: any, platform: any) {
 		return res.status(200).json({
 			success: true,
 			message: 'You have successfully logged in!',
-			token: loginResponse.token,
-			user: loginResponse.userData
+			token: loginResponse.token
 		});
 
 		// return passport.authenticate('local-login', async (err, token, userData) => {

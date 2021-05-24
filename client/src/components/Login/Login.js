@@ -88,11 +88,11 @@ export class Login extends Component {
 				error: null,
 				value: ''
 			},
-			network: {
-				error: null,
-				value: '',
-				id: ''
-			},
+			// network: {
+			// 	error: null,
+			// 	value: '',
+			// 	id: ''
+			// },
 			autoLoginAttempted: false,
 			error: '',
 			networks,
@@ -105,11 +105,11 @@ export class Login extends Component {
 		const { networks = [] } = nextProps;
 		this.setState(() => ({
 			networks,
-			network: {
-				error: null,
-				value: networks[0].name || '',
-				id: networks[0].id
-			},
+			// network: {
+			// 	error: null,
+			// 	value: networks[0].name || '',
+			// 	id: networks[0].id
+			// },
 			authEnabled: networks[0].authEnabled
 		}));
 	}
@@ -122,28 +122,25 @@ export class Login extends Component {
 		const newState = {
 			[name]: { value }
 		};
-		if (name === 'network') {
-			const { networks } = this.state;
-			newState.authEnabled = (
-				networks.find(n => n.name === value) || {}
-			).authEnabled;
-			newState.network.id = (networks.find(n => n.name === value) || {}).id;
-		}
+		// if (name === 'network') {
+		// 	const { networks } = this.state;
+		// 	newState.authEnabled = (
+		// 		networks.find(n => n.name === value) || {}
+		// 	).authEnabled;
+		// 	newState.network.id = (networks.find(n => n.name === value) || {}).id;
+		// }
 
 		this.setState(newState);
 	};
 
-	async performLogin({ user, password, network }) {
+	async performLogin({ user, password }) {
 		const { login } = this.props;
 		const { authEnabled } = this.state;
 
-		const info = await login(
-			{
-				user: authEnabled ? user : 'dummy-user',
-				password: authEnabled ? password : 'dummy-password'
-			},
-			network
-		);
+		const info = await login({
+			user: authEnabled ? user : 'dummy-user',
+			password: authEnabled ? password : 'dummy-password'
+		});
 
 		this.setState(() => ({ info }));
 		if (info.status === 'Success') {
@@ -156,12 +153,11 @@ export class Login extends Component {
 	submitForm = async e => {
 		e.preventDefault();
 
-		const { user, password, network } = this.state;
+		const { user, password } = this.state;
 
 		await this.performLogin({
 			user: user.value,
-			password: password.value,
-			network: network.id
+			password: password.value
 		});
 	};
 
@@ -181,20 +177,12 @@ export class Login extends Component {
 			this.setState(() => ({
 				autoLoginAttempted: true
 			}));
-			await this.performLogin({ network: networks[0].name });
+			await this.performLogin();
 		}
 	}
 
 	render() {
-		const {
-			info,
-			user,
-			password,
-			network,
-			networks,
-			authEnabled,
-			isLoading
-		} = this.state;
+		const { info, user, password, networks, authEnabled, isLoading } = this.state;
 		const { classes, error } = this.props;
 
 		return (
@@ -207,7 +195,7 @@ export class Login extends Component {
 						Sign in
 					</Typography>
 					<form className={classes.form} onSubmit={this.submitForm}>
-						<FormControl margin="normal" required fullWidth>
+						{/* <FormControl margin="normal" required fullWidth>
 							<TextField
 								required
 								fullWidth
@@ -239,7 +227,7 @@ export class Login extends Component {
 									{network.error}
 								</FormHelperText>
 							)}
-						</FormControl>
+						</FormControl> */}
 						{authEnabled && (
 							<FormControl margin="normal" required fullWidth>
 								<TextField

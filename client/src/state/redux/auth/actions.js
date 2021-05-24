@@ -19,26 +19,27 @@ export const error = errors => ({
 	payload: errors
 });
 
-export const register = registered => ({
-	type: types.REGISTER,
-	payload: registered
-});
+// #NOT_IN_USE
+// export const register = registered => ({
+// 	type: types.REGISTER,
+// 	payload: registered
+// });
 
-export const unregister = unregistered => ({
-	type: types.UNREGISTER,
-	payload: unregistered
-});
+// export const unregister = unregistered => ({
+// 	type: types.UNREGISTER,
+// 	payload: unregistered
+// });
 
-export const userlist = userlists => ({
-	type: types.USERLIST,
-	payload: userlists
-});
+// export const userlist = userlists => ({
+// 	type: types.USERLIST,
+// 	payload: userlists
+// });
 
 export default {
 	login,
 	network,
-	error,
-	register,
-	unregister,
-	userlist
+	error
+	// register,
+	// unregister,
+	// userlist
 };

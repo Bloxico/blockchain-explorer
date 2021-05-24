@@ -33,6 +33,7 @@ export enum explorerError {
 	ERROR_2013 = 'Channel name [%s] already exist in DB , Kindly re-run the DB scripts to proceed',
 	ERROR_2014 = 'Invalid platform configuration, Please check the log',
 	ERROR_2015 = 'Invalid network configuration, Please check the log',
+	ERROR_2016 = 'There is more than one network configuration found for Hyperledger fabric platform',
 
 	// Generic Message
 	MESSAGE_1001 = 'Explorer will continue working with only DB data',

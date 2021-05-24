@@ -112,7 +112,7 @@ export const getTransactionType = func;
 export const getTransactionByOrgType = func;
 export const getTransactionPerHourType = func;
 export const getTransactionPerMinType = func;
-export const getUserListType = func;
+// export const getUserListType = func;
 
 export const notificationsType = arrayOf(
 	shape({
@@ -189,13 +189,13 @@ export const transactionPerMinType = arrayOf(
 	})
 );
 
-export const userListType = arrayOf(
-	shape({
-		username: string,
-		email: string,
-		networkName: string,
-		firstName: string,
-		lastName: string,
-		roles: string
-	})
-);
+// export const userListType = arrayOf(
+// 	shape({
+// 		username: string,
+// 		email: string,
+// 		networkName: string,
+// 		firstName: string,
+// 		lastName: string,
+// 		roles: string
+// 	})
+// );

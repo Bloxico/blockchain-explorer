@@ -19,13 +19,14 @@ export const authCheckMiddleware = async (req, res, next) => {
 
 	// Decode the token using a secret key-phrase
 	const jwtSecret = process.env.JWT_SECRET || 'secretKey';
-	return jwt.verify(token, jwtSecret, (err, decoded) => {
+	return jwt.verify(token, jwtSecret, async (err, decoded) => {
 		// The 401 code is for unauthorized status
 		if (err) {
-			console.log('ERROR ERROR ERROR');
+			console.log('401 response => REFRESH TOKEN');
 
-			// TODO: Refresh
-			return res.status(401).end();
+			const loginResponse = await AuthorizationService.refresh();
+
+			// return res.status(401).end();
 		}
 
 		req.network = 'slaff-test-network';

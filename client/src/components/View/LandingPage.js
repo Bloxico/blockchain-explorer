@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Logo from '../../static/images/Explorer_Logo.svg';
 import { chartOperations, chartSelectors } from '../../state/redux/charts';
 import { tableOperations } from '../../state/redux/tables';
-import { authOperations } from '../../state/redux/auth';
+// import { authOperations } from '../../state/redux/auth';
 import {
 	currentChannelType,
 	getBlockListType,
@@ -25,8 +25,8 @@ import {
 	getTransactionByOrgType,
 	getTransactionListType,
 	getTransactionPerHourType,
-	getTransactionPerMinType,
-	getUserListType
+	getTransactionPerMinType
+	// getUserListType
 } from '../types';
 
 const {
@@ -51,7 +51,7 @@ const {
 	transactionList
 } = tableOperations;
 
-const { userlist } = authOperations;
+// const { userlist } = authOperations;
 
 const { currentChannelSelector } = chartSelectors;
 
@@ -120,8 +120,8 @@ export class LandingPage extends Component {
 			getTransactionList,
 			getTransactionPerHour,
 			getTransactionPerMin,
-			updateLoadStatus,
-			userlist: userlistData
+			updateLoadStatus
+			// userlist: userlistData
 			// getUserList
 		} = this.props;
 		await getChannel();
@@ -145,8 +145,8 @@ export class LandingPage extends Component {
 			getTransactionByOrg(currentChannel),
 			getTransactionList(currentChannel),
 			getTransactionPerHour(currentChannel),
-			getTransactionPerMin(currentChannel),
-			userlistData()
+			getTransactionPerMin(currentChannel)
+			// userlistData()
 		]);
 		clearTimeout(promiseTimeout);
 		updateLoadStatus();
@@ -208,8 +208,8 @@ LandingPage.propTypes = {
 	getTransactionByOrg: getTransactionByOrgType.isRequired,
 	getTransactionList: getTransactionListType.isRequired,
 	getTransactionPerHour: getTransactionPerHourType.isRequired,
-	getTransactionPerMin: getTransactionPerMinType.isRequired,
-	userlist: getUserListType.isRequired
+	getTransactionPerMin: getTransactionPerMinType.isRequired
+	// userlist: getUserListType.isRequired
 };
 
 LandingPage.defaultProps = {
@@ -237,8 +237,8 @@ const mapDispatchToProps = {
 	getTransactionByOrg: transactionByOrg,
 	getTransactionList: transactionList,
 	getTransactionPerHour: transactionPerHour,
-	getTransactionPerMin: transactionPerMin,
-	userlist: userlist
+	getTransactionPerMin: transactionPerMin
+	// userlist: userlist
 	//getUserList: userList
 };
 

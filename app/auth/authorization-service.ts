@@ -1,7 +1,16 @@
 import axios, { AxiosInstance } from 'axios';
-import { AuthServiceResponseModel } from './response-model';
+import {
+	AuthServiceLoginResponseModel,
+	AuthServiceResponseModel
+} from './response-model';
 import { helper } from '../common/helper';
+const url = require('url');
 const logger = helper.getLogger('Authorization service');
+
+enum grantType {
+	PASSWORD = 'password',
+	REFRESH_TOKEN = 'refresh_token'
+}
 
 class AuthorizationService {
 	private readonly client: AxiosInstance;
@@ -10,7 +19,7 @@ class AuthorizationService {
 	constructor() {
 		// TODO: Check this
 		const serviceAddress =
-			process.env.AUTH_SERVICE_HOST || 'http://192.168.100.102:3000/';
+			process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
 		this.client = axios.create({ baseURL: serviceAddress });
 
 		this.tenant = process.env.AUTH_SERVICE_TENANT_IDENTIFIER || 'playground';
@@ -25,13 +34,6 @@ class AuthorizationService {
 		// TODO: Add response model
 		const response = await this.post<any>('user/login', requestData);
 
-		// const requestParams = {
-		// 	grant_type: "password",
-		// 	username: username,
-		// 	password: password
-		// }
-		// const response = await this.postWithParams<any>('user/login', requestParams)
-
 		return {
 			token: response.token,
 			userData: {
@@ -39,15 +41,41 @@ class AuthorizationService {
 				name: 'test@test.com'
 			}
 		};
+
+		// const requestParams = {
+		// 	grant_type: grantType.PASSWORD,
+		// 	username: username,
+		// 	password: password
+		// }
+		// const response: AuthServiceLoginResponseModel = await this.postWithParams<any>('user/loginParams', requestParams)
+
+		// return {
+		// 	token: response.accessToken
+		// };
 	}
 
-	// TODO: Refresh
+	async refresh(): Promise<any> {
+		const requestParams = {
+			grant_type: grantType.REFRESH_TOKEN
+		};
 
-	private async post<T>(
-		action: string,
-		requestData: any,
-		additionalHeaders?: string
-	): Promise<T> {
+		const additionalHeaders = {
+			'Identity-RefreshToken': 'REFRESH_TOKEN'
+		};
+
+		console.log(requestParams);
+		const response = await this.postWithParams<any>(
+			'user/refresh',
+			requestParams,
+			additionalHeaders
+		);
+
+		return {
+			token: response.hconfig.header.Cookie
+		};
+	}
+
+	private async post<T>(action: string, requestData: any): Promise<T> {
 		const requestOptions = {
 			headers: {
 				'X-Tenant-Identifier': this.tenant,
@@ -68,18 +96,30 @@ class AuthorizationService {
 	private async postWithParams<T>(
 		action: string,
 		params: any,
-		additionalHeaders?: string
+		additionalHeaders?: any
 	): Promise<T> {
-		const requestOptions = {
-			headers: {
-				'X-Tenant-Identifier': this.tenant,
-				'Content-Type': 'application/json'
-			},
-			params: params
+		const requestParams = new url.URLSearchParams();
+		for (const key in params) {
+			requestParams.append(key, params[key]);
+		}
+
+		console.log(requestParams);
+
+		const headers = {
+			'X-Tenant-Identifier': this.tenant,
+			'Content-Type': 'application/x-www-form-urlencoded',
+			...additionalHeaders
 		};
 
+		const requestOptions = {
+			headers: headers,
+			params: requestParams.toString()
+		};
+
+		console.log(requestOptions);
+
 		try {
-			const resp = await this.client.post(action, null, requestOptions);
+			const resp = await this.client.post(action, {}, requestOptions);
 			const body = resp.data as AuthServiceResponseModel;
 			return body.data;
 		} catch (err) {

@@ -10,17 +10,18 @@ const NETWORK = `${namespaces}/NETWORK`;
 
 const ERROR = `${namespaces}/ERROR`;
 
-const REGISTER = `${namespaces}/REGISTER`;
+// NOT_IN_USE
+// const REGISTER = `${namespaces}/REGISTER`;
 
-const UNREGISTER = `${namespaces}/UNREGISTER`;
+// const UNREGISTER = `${namespaces}/UNREGISTER`;
 
-const USERLIST = `${namespaces}/USERLIST`;
+// const USERLIST = `${namespaces}/USERLIST`;
 
 export default {
 	LOGIN,
 	ERROR,
-	NETWORK,
-	REGISTER,
-	UNREGISTER,
-	USERLIST
+	NETWORK
+	// REGISTER,
+	// UNREGISTER,
+	// USERLIST
 };

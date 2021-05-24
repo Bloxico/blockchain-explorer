@@ -72,6 +72,14 @@ export class Platform {
 		// Loading the config.json
 		const all_config = JSON.parse(fs.readFileSync(config_path, 'utf8'));
 		const network_configs = all_config[fabric_const.NETWORK_CONFIGS];
+
+		if (network_configs && Object.keys(network_configs).length > 1) {
+			logger.error(
+				'************* There is more than one network configuration found for Hyperledger fabric platform *************'
+			);
+			throw new ExplorerError(explorerError.ERROR_2016);
+		}
+
 		this.syncType = all_config.syncType;
 
 		this.userService = new UserService(this);
