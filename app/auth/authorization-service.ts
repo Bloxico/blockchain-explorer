@@ -1,8 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import {
-	AuthServiceLoginResponseModel,
-	AuthServiceResponseModel
-} from './response-model';
+import { AuthServiceResponseModel } from './response-model';
 import { helper } from '../common/helper';
 const url = require('url');
 const logger = helper.getLogger('Authorization service');
@@ -18,42 +15,24 @@ class AuthorizationService {
 
 	constructor() {
 		// TODO: Check this
-		const serviceAddress =
-			process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
+		const serviceAddress = process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
 		this.client = axios.create({ baseURL: serviceAddress });
 
 		this.tenant = process.env.AUTH_SERVICE_TENANT_IDENTIFIER || 'playground';
 	}
 
 	async login(username: string, password: string): Promise<any> {
-		// const requestData = {
-		// 	email: username,
-		// 	password: password
-		// };
-
-		// // TODO: Add response model
-		// const response = await this.post<any>('user/login', requestData);
-		// return {
-		// 	token: response.token,
-		// 	userData: {
-		// 		message: 'logged in',
-		// 		name: 'test@test.com'
-		// 	}
-		// };
-
 		const requestParams = {
 			grant_type: grantType.PASSWORD,
 			username: username,
 			password: password
 		};
-		const response: PostResponse = await this.postWithParams<any>(
-			'user/loginParams',
-			requestParams
-		);
-		const refreshToken = this.getCookie(
-			response.cookies,
-			'org.apache.fincn.refreshToken'
-		);
+		
+		// const response: PostResponse = await this.postWithParams<any>('identity/v1/token', requestParams);
+		const response: PostResponse = await this.postWithParams<any>('user/loginParams', requestParams);
+
+		const cookieName = process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+		const refreshToken = this.getCookie(response.cookies, cookieName);
 
 		return {
 			accessToken: response.data.accessToken,
@@ -70,11 +49,8 @@ class AuthorizationService {
 			'Identity-RefreshToken': 'REFRESH_TOKEN'
 		};
 
-		const response = await this.postWithParams<any>(
-			'user/refresh',
-			requestParams,
-			additionalHeaders
-		);
+		// const response = await this.postWithParams<any>('identity/v1/token', requestParams, additionalHeaders);
+		const response = await this.postWithParams<any>('user/refresh', requestParams, additionalHeaders);
 
 		return {
 			token: response

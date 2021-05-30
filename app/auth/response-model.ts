@@ -4,10 +4,10 @@ export class AuthServiceResponseModel {
 	data: any;
 }
 
-export class AuthServiceLoginResponseModel {
-	tokenType: string;
-	accessToken: string;
-	accessTokenExpiration: string;
-	refreshTokenExpiration: string;
-	passwordExpiration: string;
-}
+// export class AuthServiceResponseModel {
+// 	tokenType: string;
+// 	accessToken: string;
+// 	accessTokenExpiration: string;
+// 	refreshTokenExpiration: string;
+// 	passwordExpiration: string;
+// }
