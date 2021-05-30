@@ -26,31 +26,39 @@ class AuthorizationService {
 	}
 
 	async login(username: string, password: string): Promise<any> {
-		const requestData = {
-			email: username,
+		// const requestData = {
+		// 	email: username,
+		// 	password: password
+		// };
+
+		// // TODO: Add response model
+		// const response = await this.post<any>('user/login', requestData);
+		// return {
+		// 	token: response.token,
+		// 	userData: {
+		// 		message: 'logged in',
+		// 		name: 'test@test.com'
+		// 	}
+		// };
+
+		const requestParams = {
+			grant_type: grantType.PASSWORD,
+			username: username,
 			password: password
 		};
+		const response: PostResponse = await this.postWithParams<any>(
+			'user/loginParams',
+			requestParams
+		);
+		const refreshToken = this.getCookie(
+			response.cookies,
+			'org.apache.fincn.refreshToken'
+		);
 
-		// TODO: Add response model
-		const response = await this.post<any>('user/login', requestData);
 		return {
-			token: response.token,
-			userData: {
-				message: 'logged in',
-				name: 'test@test.com'
-			}
+			accessToken: response.data.accessToken,
+			refreshToken
 		};
-
-		// const requestParams = {
-		// 	grant_type: grantType.PASSWORD,
-		// 	username: username,
-		// 	password: password
-		// }
-		// const response: AuthServiceLoginResponseModel = await this.postWithParams<any>('user/loginParams', requestParams)
-
-		// return {
-		// 	token: response.accessToken
-		// };
 	}
 
 	async refresh(): Promise<any> {
@@ -62,7 +70,6 @@ class AuthorizationService {
 			'Identity-RefreshToken': 'REFRESH_TOKEN'
 		};
 
-		console.log(requestParams);
 		const response = await this.postWithParams<any>(
 			'user/refresh',
 			requestParams,
@@ -70,7 +77,7 @@ class AuthorizationService {
 		);
 
 		return {
-			token: response.hconfig.header.Cookie
+			token: response
 		};
 	}
 
@@ -88,7 +95,7 @@ class AuthorizationService {
 
 			if (resp.status != 200) {
 				// TODO: Check this
-				console.log(body)
+				console.log(body);
 				throw new Error(`Failed to login: ${body}`);
 			}
 
@@ -103,14 +110,7 @@ class AuthorizationService {
 		action: string,
 		params: any,
 		additionalHeaders?: any
-	): Promise<T> {
-		const requestParams = new url.URLSearchParams();
-		for (const key in params) {
-			requestParams.append(key, params[key]);
-		}
-
-		console.log(requestParams);
-
+	): Promise<PostResponse> {
 		const headers = {
 			'X-Tenant-Identifier': this.tenant,
 			'Content-Type': 'application/x-www-form-urlencoded',
@@ -119,10 +119,9 @@ class AuthorizationService {
 
 		const requestOptions = {
 			headers: headers,
-			params: requestParams.toString()
+			params: params,
+			withCredentials: true
 		};
-
-		console.log(requestOptions);
 
 		try {
 			const resp = await this.client.post(action, {}, requestOptions);
@@ -130,16 +129,31 @@ class AuthorizationService {
 
 			if (resp.status != 200) {
 				// TODO: Check this
-				console.log(body)
+				console.log(body);
 				throw new Error(`Failed to login: ${body}`);
 			}
 
-			return body.data;
+			return new PostResponse(body.data, resp.headers['set-cookie'][0]);
 		} catch (err) {
 			logger.error(err);
 			throw err;
 		}
 	}
+
+	private getCookie(cookies: any, name: string): string {
+		let matches = cookies.match(
+			new RegExp(
+				'(?:^|; )' +
+					name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') +
+					'=([^;]*)'
+			)
+		);
+		return matches ? decodeURIComponent(matches[1]) : undefined;
+	}
+}
+
+class PostResponse {
+	constructor(readonly data: any, readonly cookies?: any) {}
 }
 
 module.exports = new AuthorizationService();

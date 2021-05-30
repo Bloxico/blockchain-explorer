@@ -45,10 +45,12 @@ export async function authroutes(router: any, platform: any) {
 				req.body.password
 			);
 
+			// res.cookie('org.apache.fincn.refreshToken', loginResponse.refreshToken)
+
 			return res.status(200).json({
 				success: true,
 				message: 'You have successfully logged in!',
-				token: loginResponse.token
+				token: loginResponse.accessToken
 			});
 		} catch (error) {
 			return res.status(400).json({
@@ -58,12 +60,19 @@ export async function authroutes(router: any, platform: any) {
 		}
 	});
 
-	router.post(
-		'/logout',
-		async (req: { body: any; logout: () => void }, res: { send: () => void }) => {
-			logger.debug('req.body', req.body);
-			req.logout();
-			res.send();
-		}
-	);
+	// router.post(
+	// 	'/logout',
+	// 	async (req: { body: any; logout: () => void }, res: { send: () => void }) => {
+	// 		logger.debug('req.body', req.body);
+	// 		req.logout();
+	// 		res.send();
+	// 	}
+	// );
+
+	router.post('/logout', async (req, res, next) => {
+		logger.debug('req.body', req.body);
+		req.logout();
+		// res.clearCookie('org.apache.fincn.refreshToken').send();
+		res.send();
+	});
 }

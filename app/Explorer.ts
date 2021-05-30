@@ -111,7 +111,13 @@ export class Explorer {
 			// Make sure that platform instance will be referred after its initialization
 			// passport.use('local-login', localLoginStrategy(platform));
 
-			this.app.use('/api', authCheckMiddleware);
+			// NOTE: In platform initialization, we checked the constraint that there should be ONE network in configuration.
+			// For that reason, we can be sure to read the first value in the networks list
+			const networkName = platform
+				.getNetworks()
+				.keys()
+				.next().value;
+			this.app.use('/api', authCheckMiddleware(networkName));
 
 			const authrouter = Express.Router();
 
