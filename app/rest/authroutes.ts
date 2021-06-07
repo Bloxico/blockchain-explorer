@@ -47,7 +47,7 @@ export async function authroutes(router: any, platform: any) {
 
 			const cookieName =
 				process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-			res.cookie(cookieName, loginResponse.refreshToken);
+			res.cookie(cookieName, loginResponse.refreshToken, { sameSite: 'none', secure: true });
 
 			return res.status(200).json({
 				success: true,

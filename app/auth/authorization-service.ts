@@ -83,14 +83,16 @@ class AuthorizationService {
 			const body = resp.data as AuthServiceResponseModel;
 
 			if (resp.status != 200) {
-				// TODO: Check this
-				console.log(body);
 				throw new Error(`Failed to login: ${body}`);
 			}
 
 			return body.data;
 		} catch (err) {
 			logger.error(err);
+			if (err?.response?.status == 400) {
+				const errData = err.response.data as AuthServiceResponseModel;
+				throw new Error(`Failed to login: ${errData.message}`);
+			}
 			throw err;
 		}
 	}
@@ -117,14 +119,17 @@ class AuthorizationService {
 			const body = resp.data as AuthServiceResponseModel;
 
 			if (resp.status != 200) {
-				// TODO: Check this
-				console.log(body);
 				throw new Error(`Failed to login: ${body}`);
 			}
 
 			return new PostResponse(body.data, resp.headers['set-cookie'][0]);
 		} catch (err) {
 			logger.error(err);
+			if (err?.response?.status == 400) {
+				const errData = err.response.data as AuthServiceResponseModel;
+				throw new Error(`Failed to login: ${errData.message}`);
+			}
+
 			throw err;
 		}
 	}
