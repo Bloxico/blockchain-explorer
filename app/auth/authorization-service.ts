@@ -14,7 +14,6 @@ class AuthorizationService {
 	private readonly tenant: string;
 
 	constructor() {
-		// TODO: Check this
 		const serviceAddress =
 			process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
 		this.client = axios.create({ baseURL: serviceAddress });
