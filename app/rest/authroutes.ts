@@ -45,8 +45,9 @@ export async function authroutes(router: any, platform: any) {
 				req.body.password
 			);
 
-			// const cookieName = process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-			// res.cookie(cookieName, loginResponse.refreshToken)
+			const cookieName =
+				process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+			res.cookie(cookieName, loginResponse.refreshToken);
 
 			return res.status(200).json({
 				success: true,
@@ -61,20 +62,12 @@ export async function authroutes(router: any, platform: any) {
 		}
 	});
 
-	// router.post(
-	// 	'/logout',
-	// 	async (req: { body: any; logout: () => void }, res: { send: () => void }) => {
-	// 		logger.debug('req.body', req.body);
-	// 		req.logout();
-	// 		res.send();
-	// 	}
-	// );
-
 	router.post('/logout', async (req, res, next) => {
 		logger.debug('req.body', req.body);
 		req.logout();
-		// const cookieName = process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-		// res.clearCookie(cookieName).send();
+		const cookieName =
+			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+		res.clearCookie(cookieName).send();
 		res.send();
 	});
 }

@@ -25,8 +25,9 @@ export const authCheckMiddleware = function(networkName) {
 			if (err) {
 				const refreshTokenResponse = await AuthorizationService.refresh();
 
-				// const cookieName = process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-				// res.cookie(cookieName, refreshTokenResponse.refreshToken)
+				const cookieName =
+					process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+				res.cookie(cookieName, refreshTokenResponse.refreshToken);
 			}
 			req.network = networkName;
 			return next();

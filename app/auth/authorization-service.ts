@@ -15,7 +15,8 @@ class AuthorizationService {
 
 	constructor() {
 		// TODO: Check this
-		const serviceAddress = process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
+		const serviceAddress =
+			process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
 		this.client = axios.create({ baseURL: serviceAddress });
 
 		this.tenant = process.env.AUTH_SERVICE_TENANT_IDENTIFIER || 'playground';
@@ -27,11 +28,15 @@ class AuthorizationService {
 			username: username,
 			password: password
 		};
-		
-		// const response: PostResponse = await this.postWithParams<any>('identity/v1/token', requestParams);
-		const response: PostResponse = await this.postWithParams<any>('user/loginParams', requestParams);
 
-		const cookieName = process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+		// const response: PostResponse = await this.postWithParams<any>('identity/v1/token', requestParams);
+		const response: PostResponse = await this.postWithParams<any>(
+			'user/loginParams',
+			requestParams
+		);
+
+		const cookieName =
+			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
 		const refreshToken = this.getCookie(response.cookies, cookieName);
 
 		return {
@@ -50,10 +55,18 @@ class AuthorizationService {
 		};
 
 		// const response = await this.postWithParams<any>('identity/v1/token', requestParams, additionalHeaders);
-		const response = await this.postWithParams<any>('user/refresh', requestParams, additionalHeaders);
+		const response = await this.postWithParams<any>(
+			'user/refresh',
+			requestParams,
+			additionalHeaders
+		);
+
+		const cookieName =
+			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+		const refreshToken = this.getCookie(response.cookies, cookieName);
 
 		return {
-			token: response
+			refreshToken
 		};
 	}
 
