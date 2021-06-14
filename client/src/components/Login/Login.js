@@ -96,7 +96,7 @@ export class Login extends Component {
 			autoLoginAttempted: false,
 			error: '',
 			networks,
-			authEnabled: true,
+			authEnabled: false,
 			isLoading: false
 		};
 	}
