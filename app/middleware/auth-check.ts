@@ -11,6 +11,12 @@ const AuthorizationService = require('../auth/authorization-service');
 
 export const authCheckMiddleware = function(networkName) {
 	return function(req, res, next) {
+		const useAuthService = process.env.USE_AUTH_SERVICE || false;
+		if (!useAuthService) {
+			req.network = networkName;
+			return next();
+		}
+
 		if (!req.headers.authorization) {
 			// The 401 code is for unauthorized status
 			return res.status(401).end();
@@ -27,7 +33,10 @@ export const authCheckMiddleware = function(networkName) {
 
 				const cookieName =
 					process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-				res.cookie(cookieName, refreshTokenResponse.refreshToken, { sameSite: 'none', secure: true });
+				res.cookie(cookieName, refreshTokenResponse.refreshToken, {
+					sameSite: 'none',
+					secure: true
+				});
 			}
 			req.network = networkName;
 			return next();
