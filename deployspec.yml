@@ -1,0 +1,14 @@
+version: 0.2
+phases: 
+  install:
+    commands:
+      # Add ssh key
+      - mkdir -p ~/.ssh
+      - echo '-----BEGIN RSA PRIVATE KEY-----' > ~/.ssh/beta.pem
+      - echo $SSH_BETA >> ~/.ssh/beta.pem
+      - echo '-----END RSA PRIVATE KEY-----\n' >> ~/.ssh/beta.pem
+      - chmod 600 ~/.ssh/beta.pem
+  build: 
+    commands: 
+    - PULL_COMMAND='ls'
+    - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@dev3-identity.sacret-life.com $PULL_COMMAND"
