@@ -11,7 +11,7 @@ const AuthorizationService = require('../auth/authorization-service');
 
 export const authCheckMiddleware = function(networkName) {
 	return function(req, res, next) {
-		const useAuthService = process.env.USE_AUTH_SERVICE || false;
+		const useAuthService = process.env.USE_AUTH_SERVICE || true;
 		if (!useAuthService) {
 			req.network = networkName;
 			return next();

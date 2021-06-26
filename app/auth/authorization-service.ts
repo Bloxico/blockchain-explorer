@@ -15,7 +15,7 @@ class AuthorizationService {
 
 	constructor() {
 		const serviceAddress =
-			process.env.AUTH_SERVICE_HOST || 'http://192.168.0.21:3000/';
+			process.env.AUTH_SERVICE_HOST || 'https://dev3-identity.sacret-life.com';
 		this.client = axios.create({ baseURL: serviceAddress });
 
 		this.tenant = process.env.AUTH_SERVICE_TENANT_IDENTIFIER || 'playground';
@@ -28,11 +28,12 @@ class AuthorizationService {
 			password: password
 		};
 
-		// const response: PostResponse = await this.postWithParams<any>('identity/v1/token', requestParams);
 		const response: PostResponse = await this.postWithParams<any>(
-			'user/loginParams',
+			'identity/v1/token',
 			requestParams
 		);
+
+		console.log(response);
 
 		const cookieName =
 			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
@@ -44,18 +45,18 @@ class AuthorizationService {
 		};
 	}
 
-	async refresh(): Promise<any> {
+	async refresh(username: string): Promise<any> {
 		const requestParams = {
 			grant_type: grantType.REFRESH_TOKEN
 		};
 
 		const additionalHeaders = {
-			'Identity-RefreshToken': 'REFRESH_TOKEN'
+			'Identity-RefreshToken': 'REFRESH_TOKEN',
+			User: username
 		};
 
-		// const response = await this.postWithParams<any>('identity/v1/token', requestParams, additionalHeaders);
 		const response = await this.postWithParams<any>(
-			'user/refresh',
+			'identity/v1/token',
 			requestParams,
 			additionalHeaders
 		);
@@ -67,33 +68,6 @@ class AuthorizationService {
 		return {
 			refreshToken
 		};
-	}
-
-	private async post<T>(action: string, requestData: any): Promise<T> {
-		const requestOptions = {
-			headers: {
-				'X-Tenant-Identifier': this.tenant,
-				'Content-Type': 'application/json'
-			}
-		};
-
-		try {
-			const resp = await this.client.post(action, requestData, requestOptions);
-			const body = resp.data as AuthServiceResponseModel;
-
-			if (resp.status != 200) {
-				throw new Error(`Failed to login: ${body}`);
-			}
-
-			return body.data;
-		} catch (err) {
-			logger.error(err);
-			if (err?.response?.status == 400) {
-				const errData = err.response.data as AuthServiceResponseModel;
-				throw new Error(`Failed to login: ${errData.message}`);
-			}
-			throw err;
-		}
 	}
 
 	private async postWithParams<T>(
