@@ -10,5 +10,9 @@ phases:
       - chmod 600 ~/.ssh/beta.pem
   build: 
     commands: 
-    - PULL_COMMAND='ls'
+    - LOGIN_COMMAND='aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 724140003658.dkr.ecr.eu-central-1.amazonaws.com;'
+    - PULL_COMMAND='docker pull $REGISTRY_URI:$ENVIRONMENT;'
+    - RESTART_COMMAND='cd /home/ubuntu/go/src/github.com/blockchain-explorer; docker-compose down; docker volume rm blockchain-explorer_walletstore; docker-compose up -d;'
+    - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@dev3-identity.sacret-life.com $LOGIN_COMMAND"
     - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@dev3-identity.sacret-life.com $PULL_COMMAND"
+    - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@dev3-identity.sacret-life.com $RESTART_COMMAND"
