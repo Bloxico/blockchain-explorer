@@ -1,13 +1,7 @@
 export class AuthServiceResponseModel {
-	statusCode: number;
-	message: string;
-	data: any;
+	tokenType: string;
+	accessToken: string;
+	accessTokenExpiration: string;
+	refreshTokenExpiration: string;
+	passwordExpiration: string;
 }
-
-// export class AuthServiceResponseModel {
-// 	tokenType: string;
-// 	accessToken: string;
-// 	accessTokenExpiration: string;
-// 	refreshTokenExpiration: string;
-// 	passwordExpiration: string;
-// }

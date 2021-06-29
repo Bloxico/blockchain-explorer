@@ -20,6 +20,7 @@ import { explorerError } from './common/ExplorerMessage';
 import { authCheckMiddleware } from './middleware/auth-check';
 import swaggerDocument from './swagger.json';
 import { ExplorerError } from './common/ExplorerError';
+import cookieParser from 'cookie-parser';
 // import { localLoginStrategy } from './passport/local-login';
 
 /**
@@ -63,6 +64,8 @@ export class Explorer {
 		this.app.use(compression());
 		this.persistence = null;
 		this.platforms = [];
+
+		this.app.use(cookieParser())
 	}
 
 	/**

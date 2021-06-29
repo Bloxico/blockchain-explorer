@@ -3,6 +3,7 @@
  */
 
 import * as jwt from 'jsonwebtoken';
+import { AuthServiceResponseModel } from '../auth/response-model';
 const AuthorizationService = require('../auth/authorization-service');
 
 /**
@@ -25,18 +26,25 @@ export const authCheckMiddleware = function(networkName) {
 		// Get the last part from a authorization header string like "bearer token-value"
 		const token = req.headers.authorization.split(' ')[1];
 
+		const cookieName =
+			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+
 		// Decode the token using a secret key-phrase
 		const jwtSecret = process.env.JWT_SECRET || 'secretKey';
 		return jwt.verify(token, jwtSecret, async (err, decoded) => {
 			if (err) {
-				const refreshTokenResponse = await AuthorizationService.refresh();
+				console.log("decoded ", decoded)
 
-				const cookieName =
-					process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-				res.cookie(cookieName, refreshTokenResponse.refreshToken, {
-					sameSite: 'none',
-					secure: true
-				});
+				if (req.cookies && req.cookies[cookieName]) {
+					// TODO: If decoded is true, red username from decoded data
+					const refreshToken = req.cookies[cookieName];
+					const refreshTokenResponse = await AuthorizationService.refresh('explorerUser', JSON.parse(refreshToken));
+					
+					res.cookie(cookieName, refreshTokenResponse.refreshToken, {
+						sameSite: 'none',
+						secure: true
+					});
+				}
 			}
 			req.network = networkName;
 			return next();

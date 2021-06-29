@@ -28,10 +28,7 @@ class AuthorizationService {
 			password: password
 		};
 
-		const response: PostResponse = await this.postWithParams<any>(
-			'identity/v1/token',
-			requestParams
-		);
+		const response: PostResponse = await this.postWithParams<any>('identity/v1/token', requestParams);
 
 		console.log(response);
 
@@ -40,26 +37,22 @@ class AuthorizationService {
 		const refreshToken = this.getCookie(response.cookies, cookieName);
 
 		return {
-			accessToken: response.data.accessToken,
+			accessToken: response.data.accessToken.split(" ")[1],
 			refreshToken
 		};
 	}
 
-	async refresh(username: string): Promise<any> {
+	async refresh(username: string, oldRefreshToken: string): Promise<any> {
 		const requestParams = {
 			grant_type: grantType.REFRESH_TOKEN
 		};
 
 		const additionalHeaders = {
-			'Identity-RefreshToken': 'REFRESH_TOKEN',
+			'Identity-RefreshToken': oldRefreshToken,
 			User: username
 		};
 
-		const response = await this.postWithParams<any>(
-			'identity/v1/token',
-			requestParams,
-			additionalHeaders
-		);
+		const response = await this.postWithParams<any>('identity/v1/token', requestParams, additionalHeaders);
 
 		const cookieName =
 			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
@@ -77,7 +70,7 @@ class AuthorizationService {
 	): Promise<PostResponse> {
 		const headers = {
 			'X-Tenant-Identifier': this.tenant,
-			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Type': 'application/json',
 			...additionalHeaders
 		};
 
@@ -95,12 +88,13 @@ class AuthorizationService {
 				throw new Error(`Failed to login: ${body}`);
 			}
 
-			return new PostResponse(body.data, resp.headers['set-cookie'][0]);
+			return new PostResponse(body, resp.headers['set-cookie'][0]);
 		} catch (err) {
 			logger.error(err);
 			if (err?.response?.status == 400) {
-				const errData = err.response.data as AuthServiceResponseModel;
-				throw new Error(`Failed to login: ${errData.message}`);
+				// const errData = err.response.data as AuthServiceResponseModel;
+				// throw new Error(`Failed to login: ${errData.message}`);
+				throw new Error(`Failed to login:`);
 			}
 
 			throw err;
@@ -115,6 +109,7 @@ class AuthorizationService {
 					'=([^;]*)'
 			)
 		);
+
 		return matches ? decodeURIComponent(matches[1]) : undefined;
 	}
 }
