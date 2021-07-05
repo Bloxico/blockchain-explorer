@@ -106,9 +106,7 @@ export class FabricConfig {
 	 * @memberof FabricConfig
 	 */
 	getEnableAuthentication() {
-		// TODO: Remove this after testing
-		return true;
-		// return this.config.client.enableAuthentication;
+		return this.config.client.enableAuthentication;
 	}
 
 	/**
