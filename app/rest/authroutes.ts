@@ -48,7 +48,7 @@ export async function authroutes(router: any, platform: any) {
 	router.post('/login', async (req, res, next) => {
 		logger.debug('req.body', req.body);
 		try {
-			const useAuthService = process.env.USE_AUTH_SERVICE || true;
+			const useAuthService = process.env.USE_AUTH_SERVICE == 'true';
 			if (!useAuthService) {
 				const jwtSecret = process.env.JWT_SECRET || 'secretKey';
 				const token = await jwtSignAsync({}, jwtSecret, {

@@ -12,7 +12,7 @@ const AuthorizationService = require('../auth/authorization-service');
 
 export const authCheckMiddleware = function(networkName) {
 	return function(req, res, next) {
-		const useAuthService = process.env.USE_AUTH_SERVICE || true;
+		const useAuthService = process.env.USE_AUTH_SERVICE == 'true';
 		if (!useAuthService) {
 			req.network = networkName;
 			return next();
@@ -33,13 +33,16 @@ export const authCheckMiddleware = function(networkName) {
 		const jwtSecret = process.env.JWT_SECRET || 'secretKey';
 		return jwt.verify(token, jwtSecret, async (err, decoded) => {
 			if (err) {
-				console.log("decoded ", decoded)
+				console.log('decoded ', decoded);
 
 				if (req.cookies && req.cookies[cookieName]) {
 					// TODO: If decoded is true, red username from decoded data
 					const refreshToken = req.cookies[cookieName];
-					const refreshTokenResponse = await AuthorizationService.refresh('explorerUser', JSON.parse(refreshToken));
-					
+					const refreshTokenResponse = await AuthorizationService.refresh(
+						'explorerUser',
+						JSON.parse(refreshToken)
+					);
+
 					res.cookie(cookieName, refreshTokenResponse.refreshToken, {
 						sameSite: 'none',
 						secure: true
