@@ -8,7 +8,7 @@
 			"id": "exploreradmin",
 			"password": "exploreradminpw"
 		},
-		"enableAuthentication": false,
+		"enableAuthentication": true,
 		"organization": "Org1MSP",
 		"connection": {
 			"timeout": {
@@ -39,11 +39,11 @@
 		"Org1MSP": {
 			"mspid": "Org1MSP",
 			"adminPrivateKey": {
-				"path": "/home/ivana/go/src/github.com/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk"
+				"path": "/home/ivana/go/src/github.com/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/37111e36707ceb5a8d88cb5b84ced4e3b8775ca192a65f967b9469d75805ebe8_sk"
 			},
 			"peers": ["peer0.org1.example.com"],
 			"signedCert": {
-				"path": "/home/ivana/go/src/github.com/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
+				"path": "/home/ivana/go/src/github.com/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
 			}
 		}
 	},

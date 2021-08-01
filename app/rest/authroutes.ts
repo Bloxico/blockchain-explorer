@@ -50,8 +50,8 @@ export async function authroutes(router: any, platform: any) {
 		try {
 			const useAuthService = process.env.USE_AUTH_SERVICE == 'true';
 			if (!useAuthService) {
-				const jwtSecret = process.env.JWT_SECRET || 'secretKey';
-				const token = await jwtSignAsync({}, jwtSecret, {
+				const pubKey = AuthorizationService.readPublicKey();
+				const token = await jwtSignAsync({}, pubKey, {
 					expiresIn: '36000s'
 				});
 				return res.status(200).json({
