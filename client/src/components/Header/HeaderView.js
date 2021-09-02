@@ -77,11 +77,11 @@ const styles = theme => {
 	};
 	return {
 		logo: {
-			width: 260,
-			height: 50,
+			width: 60,
+			height: 60,
 			'@media (max-width: 1415px) and (min-width: 990px)': {
-				width: 200,
-				height: 40
+				width: 60,
+				height: 60
 			}
 		},
 		navbarHeader: {
@@ -209,6 +209,11 @@ const styles = theme => {
 			'&:focus': {
 				outline: 'none'
 			}
+		},
+		logoText: {
+			fontSize: '36px',
+			fontWeight: 'bold',
+			margin: 'auto'
 		}
 	};
 };
@@ -503,9 +508,9 @@ export class HeaderView extends Component {
 					<div>
 						<Navbar className={classes.navbarHeader} expand="lg" fixed="top">
 							<NavbarBrand href="/">
-								{' '}
 								<img src={Logo} className={classes.logo} alt="Hyperledger Logo" />
 							</NavbarBrand>
+							<h1 className={classes.logoText}>SLC</h1>
 							<NavbarToggler onClick={this.toggle}>
 								<FontAwesome name="bars" className={classes.toggleIcon} />
 							</NavbarToggler>
