@@ -510,7 +510,7 @@ export class HeaderView extends Component {
 							<NavbarBrand href="/">
 								<img src={Logo} className={classes.logo} alt="Hyperledger Logo" />
 							</NavbarBrand>
-							<h1 className={classes.logoText}>SLC</h1>
+							<h1 className={classes.logoText}>SL Blockchain</h1>
 							<NavbarToggler onClick={this.toggle}>
 								<FontAwesome name="bars" className={classes.toggleIcon} />
 							</NavbarToggler>
