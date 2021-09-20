@@ -97,8 +97,11 @@ const styles = theme => {
 			'&:hover': {
 				color: dark ? '#242036' : '#000000'
 			},
-			'@media (max-width: 1415px) and (min-width: 990px)': {
+			'@media (max-width: 1600px) and (min-width: 1366px)': {
 				fontSize: '0.85rem'
+			},
+			'@media (max-width: 1366px) and (min-width: 990px)': {
+				fontSize: '0.75rem'
 			}
 		},
 		activeTab: {
@@ -213,7 +216,10 @@ const styles = theme => {
 		logoText: {
 			fontSize: '36px',
 			fontWeight: 'bold',
-			margin: 'auto'
+			margin: 'auto',
+			'@media (max-width: 1600px)': {
+				fontSize: '26px'
+			}
 		}
 	};
 };
@@ -506,7 +512,7 @@ export class HeaderView extends Component {
 				/>
 				<Router>
 					<div>
-						<Navbar className={classes.navbarHeader} expand="lg" fixed="top">
+						<Navbar className={classes.navbarHeader} expand="xl" fixed="top">
 							<NavbarBrand href="/">
 								<img src={Logo} className={classes.logo} alt="Hyperledger Logo" />
 							</NavbarBrand>
