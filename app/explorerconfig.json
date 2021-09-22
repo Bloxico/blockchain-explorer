@@ -11,7 +11,7 @@
 	"sync": {
 		"type": "local",
 		"platform": "fabric",
-		"blocksSyncTime": "1"
+		"blocksSyncTime": "10"
 	},
 	"jwt": {
 		"secret": "a secret phrase!!",
