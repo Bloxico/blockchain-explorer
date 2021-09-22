@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import Slider from 'react-slick';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Logo from '../../static/images/Explorer_Logo.svg';
+import Logo from '../../static/images/Sle_logo.svg';
 import { chartOperations, chartSelectors } from '../../state/redux/charts';
 import { tableOperations } from '../../state/redux/tables';
 // import { authOperations } from '../../state/redux/auth';
@@ -67,13 +67,13 @@ const styles = theme => {
 			backgroundColor: '#f0f5f9'
 		},
 		content: {
-			marginTop: 450,
-			marginLeft: 550,
+			width: '800px',
+			marginTop: '50px',
+			marginLeft: 'auto',
+			marginRight: 'auto',
+			textAlign: 'center',
 			'& > h1': {
 				fontSize: '40pt'
-			},
-			'& > div': {
-				marginLeft: 150
 			}
 		}
 	};
@@ -96,8 +96,12 @@ export class LandingPage extends Component {
 				slidesToScroll: 1
 			},
 			logoStyle: {
-				width: '520px',
-				height: '100px'
+				height: '100px',
+				display: 'block',
+				marginLeft: 'auto',
+				marginRight: 'auto',
+				marginTop: '40vh',
+				width: '50%'
 			},
 			hasDbError: false
 		};
@@ -174,8 +178,8 @@ export class LandingPage extends Component {
 		const { classes } = this.props;
 		return (
 			<div className={classes.background}>
+				<img src={Logo} style={logoStyle} alt="Hyperledger Logo" />
 				<div className={classes.content}>
-					<img src={Logo} style={logoStyle} alt="Hyperledger Logo" />
 					<Slider {...settings}>
 						<div>
 							<h3>ACCESSING THE NETWORK</h3>
