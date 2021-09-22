@@ -1,0 +1,18 @@
+version: 0.2
+phases: 
+  install:
+    commands:
+      # Add ssh key
+      - mkdir -p ~/.ssh
+      - echo '-----BEGIN RSA PRIVATE KEY-----' > ~/.ssh/beta.pem
+      - echo $SSH_BETA >> ~/.ssh/beta.pem
+      - echo '-----END RSA PRIVATE KEY-----\n' >> ~/.ssh/beta.pem
+      - chmod 600 ~/.ssh/beta.pem
+  build: 
+    commands: 
+    - LOGIN_COMMAND='aws ecr get-login-password --region eu-central-1 | docker login -u AWS -p $(aws ecr get-login-password --region eu-central-1) 724140003658.dkr.ecr.eu-central-1.amazonaws.com
+    - PULL_COMMAND='cd /home/ubuntu/go/src/github.com/sl-v3-be-hlf-explorer && docker-compose pull;'
+    - RESTART_COMMAND='cd /home/ubuntu/go/src/github.com/sl-v3-be-hlf-explorer && docker-compose restart;'
+    - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@open-beta-explorer.sacret-life.com $LOGIN_COMMAND"
+    - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@open-beta-explorer.sacret-life.com $PULL_COMMAND"
+    - eval "ssh -o StrictHostKeyChecking=no -i ~/.ssh/beta.pem ubuntu@open-beta-explorer.sacret-life.com $RESTART_COMMAND"
