@@ -54,7 +54,7 @@
 		"url": "^0.11.0",
 		"utf8-bytes": "0.0.1",
 		"winston": "^2.2.0",
-		"ws": "^5.1.1",
+		"ws": "^7.4.6",
 		"yn": "^4.0.0"
 	},
 	"license": "Apache-2.0",
@@ -114,6 +114,8 @@
 		"build": "tsc",
 		"app-start": "./start.sh",
 		"app-stop": "./stop.sh",
+		"sync-start": "./syncstart.sh",
+		"sync-stop": "./syncstop.sh",
 		"start": "run-s build app-start",
 		"docker_build": "docker build --squash -t $npm_package_name .",
 		"docker_push": "docker push ${DOCKER_REGISTRY}/$npm_package_name:$npm_package_version",
