@@ -10,7 +10,7 @@ const AuthorizationService = require('../auth/authorization-service');
  */
 
 export const authCheckMiddleware = function(networkName) {
-	return function(req, res, next) {
+	return async function(req, res, next) {
 		const useAuthService = process.env.USE_AUTH_SERVICE == 'true';
 		if (!useAuthService) {
 			req.network = networkName;
@@ -25,32 +25,35 @@ export const authCheckMiddleware = function(networkName) {
 		// Get the last part from a authorization header string like "bearer token-value"
 		const token = req.headers.authorization.split(' ')[1];
 
-		const cookieName =
-			process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
-
-		// Decode the token using a public key
-		const pubKey = AuthorizationService.readPublicKey();
-
+		// Validate the token using a public key
 		return jwt.verify(
-			token,
-			pubKey,
+			token.trim(),
+			AuthorizationService.readPublicKey(),
 			{ algorithms: ['RS512'] },
 			async (err, decoded) => {
-				if (err) {
-					if (req.cookies && req.cookies[cookieName]) {
-						const refreshToken = req.cookies[cookieName];
-						const refreshTokenResponse = await AuthorizationService.refresh(
-							JSON.parse(refreshToken)
-						);
-
-						res.cookie(cookieName, refreshTokenResponse.refreshToken, {
-							sameSite: 'none',
-							secure: true
-						});
-					}
+				if (!err) {
+					req.network = networkName;
+					return next();
 				}
-				req.network = networkName;
-				return next();
+
+				// Expired token
+				const cookieName =
+					process.env.AUTH_SERVICE_COOKIE_NAME || 'org.apache.fincn.refreshToken';
+
+				if (req.cookies && req.cookies[cookieName]) {
+					const refreshToken = req.cookies[cookieName];
+					const refreshTokenResponse = await AuthorizationService.refresh(
+						refreshToken
+					);
+
+					res.cookie(cookieName, refreshTokenResponse.refreshToken, {
+						sameSite: 'none',
+						secure: true
+					});
+
+					req.network = networkName;
+					return next();
+				}
 			}
 		);
 	};
