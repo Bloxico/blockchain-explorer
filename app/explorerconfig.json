@@ -9,7 +9,7 @@
 		"passwd": "postgress"
 	},
 	"sync": {
-		"type": "local",
+		"type": "host",
 		"platform": "fabric",
 		"blocksSyncTime": "10"
 	},
